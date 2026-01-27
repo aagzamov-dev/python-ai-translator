@@ -1,0 +1,44 @@
+    [
+        {
+            "success": true,
+            "translated_data": {
+                "description": "Bu yangi smartfon eng ilg'or xususiyatlarga ega bo'lib, eng so'nggi protsessor va yuqori aniqlikdagi kamera bilan jihozlangan, 5G tarmog'iga ulanishni qo'llab-quvvatlaydi.",
+                "features": [
+                    {
+                        "detail": "6.7 dyuymli AMOLED displey",
+                        "name": "Yuqori aniqlikdagi ekran"
+                    },
+                    {
+                        "detail": "65W tez zaryadlash texnologiyasini qo'llab-quvvatlaydi",
+                        "name": "Tez zaryadlash"
+                    }
+                ],
+                "title": "Yangi smartfon chiqarildi"
+            },
+            "target_language": "uz",
+            "summarized": false,
+            "error": null,
+            "tokens_used": 504
+        },
+        {
+            "success": true,
+            "translated_data": {
+                "description": "Bu eng so'ngi protsessor va yuqori aniqlikdagi kamera bilan jihozlangan, 5G tarmog'ini qo'llab-quvvatlaydigan ilg'or funksiyalarga ega yangi smartfon.",
+                "features": [
+                    {
+                        "detail": "6.7 dyuymli AMOLED displey",
+                        "name": "Yuqori aniqlikdagi ekran"
+                    },
+                    {
+                        "detail": "65W tez zaryadlash texnologiyasini qo'llab-quvvatlaydi",
+                        "name": "Tez zaryadlash"
+                    }
+                ],
+                "title": "Yangi smartfon taqdimoti"
+            },
+            "target_language": "uz",
+            "summarized": true,
+            "error": null,
+            "tokens_used": 547
+        }
+    ]

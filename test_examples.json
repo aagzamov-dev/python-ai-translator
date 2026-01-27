@@ -1,0 +1,74 @@
+{
+    "simple": {
+        "text": "你好世界",
+        "description": "Basic single string test"
+    },
+    "product_simple": {
+        "name": "智能手表Pro",
+        "price": "2999元",
+        "color": "深空灰",
+        "in_stock": true
+    },
+    "nested_ecommerce": {
+        "product_id": "SKU-998822",
+        "meta": {
+            "title": "2026新款 4K超高清显示器",
+            "keywords": [
+                "显示器",
+                "4K",
+                "IPS面板",
+                "电竞"
+            ],
+            "seo_desc": "这款32英寸4K显示器专为设计师和游戏玩家打造，拥有100% sRGB色域覆盖。"
+        },
+        "specs": [
+            {
+                "label": "分辨率",
+                "value": "3840 x 2160"
+            },
+            {
+                "label": "刷新率",
+                "value": "144Hz"
+            },
+            {
+                "label": "接口",
+                "value": "HDMI 2.1, DP 1.4, USB-C"
+            }
+        ]
+    },
+    "long_text_summarization": {
+        "article_id": 1024,
+        "title": "关于人工智能未来发展的深度思考",
+        "content": "随着深度学习技术的飞速发展，大语言模型已经展现出了惊人的能力。从最初的简单的文本生成，到如今能够进行复杂的逻辑推理、写代码、甚至辅助科学研究，AI的边界正在不断拓展。然而，我们也面临着诸多挑战，例如算力消耗巨大、数据隐私安全、以及AI可能带来的伦理问题。未来的AI不仅需要更聪明，更需要更安全、更可控。我们相信，通过全球开发者的共同努力，通用人工智能（AGI）的梦想终将实现。这就需要我们在算法优化、硬件加速以及政策监管等多个维度协同发力......(此处省略更多冗长内容)"
+    },
+    "complex_medical": {
+        "report_id": "MED-2026-XJL",
+        "patient": {
+            "age": 45,
+            "gender": "男"
+        },
+        "diagnosis": {
+            "primary": "急性上呼吸道感染",
+            "symptoms": [
+                "发热38.5度",
+                "咽喉痛",
+                "干咳",
+                "乏力"
+            ],
+            "history": "既往体健，无药物过敏史"
+        },
+        "prescription": [
+            {
+                "drug": "布洛芬缓释胶囊",
+                "dosage": "0.3g/次",
+                "usage": "必要时口服"
+            },
+            {
+                "drug": "连花清瘟胶囊",
+                "dosage": "4粒/次",
+                "usage": "一日三次"
+            }
+        ],
+        "notes": "建议多饮水，注意休息，若症状加重及时就诊"
+    }
+}
