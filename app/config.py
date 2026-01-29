@@ -30,13 +30,15 @@ class Settings(BaseSettings):
     # ===========================================
     DEFAULT_SOURCE_LANGUAGE: str = "zh"
     DEFAULT_TARGET_LANGUAGE: str = "en"
-    SUPPORTED_TARGET_LANGUAGES: List[str] = ["uz", "ru", "en"]
+    SUPPORTED_TARGET_LANGUAGES: List[str] = [
+        "en", "zh", "ru", "uz", "es", "ar", "fr", "de", "ja", "ko", "hi"
+    ]
     
     # ===========================================
     # API Performance Settings
     # ===========================================
-    MAX_TOKENS: int = 2048
-    TEMPERATURE: float = 0.2
+    MAX_TOKENS: int = 1024
+    TEMPERATURE: float = 0.3
     
     # ===========================================
     # Summarization Settings

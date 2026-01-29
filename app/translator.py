@@ -16,7 +16,14 @@ LANGUAGE_NAMES = {
     "zh": "Chinese",
     "en": "English", 
     "ru": "Russian",
-    "uz": "Uzbek"
+    "uz": "Uzbek",
+    "es": "Spanish",
+    "fr": "French",
+    "de": "German",
+    "ja": "Japanese",
+    "ko": "Korean",
+    "ar": "Arabic",
+    "hi": "Hindi"
 }
 
 # Shared cache for all translators
@@ -106,12 +113,19 @@ class BaseTranslator(ABC):
         return data
     
     def _create_prompt(self, strings: Dict[str, str], target_language: str, summarize: bool) -> str:
-        """Create optimized translation prompt."""
+        """Create optimized, minimal-token translation prompt."""
+        # Use ISO code or short name to save tokens
         target_name = LANGUAGE_NAMES.get(target_language, target_language)
-        sum_note = " Summarize verbose text." if summarize else ""
         
-        return f"""Translate Chinese→{target_name}. JSON only.{sum_note}
-Keep keys, translate values. Natural translation.
+        # Ultra-concise prompt to save input tokens
+        # 1. "Trans to {lang}" (Generic Source)
+        # 2. "JSON vals only" (Strict format)
+        # 3. "Natural" (Quality style)
+        instruction = f"Trans to {target_name}. JSON vals only. Natural style."
+        if summarize:
+            instruction += " Summarize long txt."
+
+        return f"""{instruction}
 {json.dumps(strings, ensure_ascii=False)}"""
     
     @abstractmethod
@@ -129,7 +143,8 @@ Keep keys, translate values. Natural translation.
         data: Union[Dict[str, Any], List[Any]],
         target_language: str = "en",
         keys_to_translate: Optional[List[str]] = None,
-        summarize: Optional[bool] = None
+        summarize: Optional[bool] = None,
+        model: Optional[str] = None
     ) -> Tuple[Union[Dict[str, Any], List[Any]], Dict[str, int]]:
         """Translate Chinese text in JSON to target language."""
         
@@ -142,10 +157,15 @@ Keep keys, translate values. Natural translation.
         
         should_summarize = summarize if summarize is not None else self._should_summarize("".join(strings.values()))
         
+        # Determine model to use
+        # 1. User requested model
+        # 2. Or configured default
+        selected_model = model if model else self._get_model()
+        
         # Check cache
         if self.enable_cache:
             cache_key = _get_cache_key(
-                self.provider_name,
+                f"{self.provider_name}:{selected_model}",
                 json.dumps(strings, ensure_ascii=False),
                 target_language,
                 should_summarize
@@ -161,9 +181,9 @@ Keep keys, translate values. Natural translation.
         prompt = self._create_prompt(strings, target_language, should_summarize)
         
         response = self._get_client().chat.completions.create(
-            model=self._get_model(),
+            model=selected_model,
             messages=[
-                {"role": "system", "content": "Fast Chinese translator. JSON output only."},
+                {"role": "system", "content": "JSON translator."},
                 {"role": "user", "content": prompt}
             ],
             max_tokens=self.max_tokens,
@@ -297,7 +317,7 @@ class OpenAITranslator(BaseTranslator):
         response = self._get_client().chat.completions.create(
             model=selected_model,
             messages=[
-                {"role": "system", "content": "Fast Chinese translator. JSON output only."},
+                {"role": "system", "content": "JSON translator."},
                 {"role": "user", "content": prompt}
             ],
             max_completion_tokens=self.max_tokens,

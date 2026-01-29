@@ -94,6 +94,8 @@ async def health_check():
 # DeepSeek Translation Endpoints
 # ===========================================
 
+import time
+
 @app.post("/deepseek/translate", response_model=TranslationResponse, tags=["DeepSeek"])
 async def deepseek_translate(request: TranslationRequest):
     """
@@ -104,6 +106,7 @@ async def deepseek_translate(request: TranslationRequest):
     if not deepseek_translator.is_configured():
         raise HTTPException(status_code=500, detail="DeepSeek API key not configured")
     
+    start_time = time.time()
     try:
         translated, usage = await deepseek_translator.translate(
             data=request.data,
@@ -111,6 +114,8 @@ async def deepseek_translate(request: TranslationRequest):
             keys_to_translate=request.keys_to_translate,
             summarize=request.summarize
         )
+        duration = round(time.time() - start_time, 3)
+        
         return TranslationResponse(
             success=True,
             translated_data=translated,
@@ -119,7 +124,8 @@ async def deepseek_translate(request: TranslationRequest):
             summarized=request.summarize or False,
             total_tokens=usage["total"],
             input_tokens=usage["input"],
-            output_tokens=usage["output"]
+            output_tokens=usage["output"],
+            response_time=duration
         )
     except Exception as e:
         return TranslationResponse(
@@ -127,7 +133,8 @@ async def deepseek_translate(request: TranslationRequest):
             translated_data=None,
             target_language=request.target_language,
             provider="deepseek",
-            error=str(e)
+            error=str(e),
+            response_time=round(time.time() - start_time, 3)
         )
 
 
@@ -150,12 +157,15 @@ async def deepseek_translate_simple(
     if not deepseek_translator.is_configured():
         raise HTTPException(status_code=500, detail="DeepSeek API key not configured")
     
+    start_time = time.time()
     try:
         translated, usage = await deepseek_translator.translate(
             data={"text": text},
             target_language=lang,
             summarize=summarize
         )
+        duration = round(time.time() - start_time, 3)
+        
         return TranslationResponse(
             success=True,
             translated_data=translated,
@@ -164,10 +174,18 @@ async def deepseek_translate_simple(
             summarized=summarize,
             total_tokens=usage["total"],
             input_tokens=usage["input"],
-            output_tokens=usage["output"]
+            output_tokens=usage["output"],
+            response_time=duration
         )
     except Exception as e:
-        return TranslationResponse(success=False, translated_data=None, target_language=lang, provider="deepseek", error=str(e))
+        return TranslationResponse(
+            success=False, 
+            translated_data=None, 
+            target_language=lang, 
+            provider="deepseek", 
+            error=str(e),
+            response_time=round(time.time() - start_time, 3)
+        )
 
 
 # ===========================================
@@ -186,6 +204,7 @@ async def openai_translate(request: TranslationRequest):
     if not openai_translator.is_configured():
         raise HTTPException(status_code=500, detail="OpenAI API key not configured")
     
+    start_time = time.time()
     try:
         translated, usage = await openai_translator.translate(
             data=request.data,
@@ -194,6 +213,8 @@ async def openai_translate(request: TranslationRequest):
             summarize=request.summarize,
             model=request.model
         )
+        duration = round(time.time() - start_time, 3)
+        
         return TranslationResponse(
             success=True,
             translated_data=translated,
@@ -202,7 +223,8 @@ async def openai_translate(request: TranslationRequest):
             summarized=request.summarize or False,
             total_tokens=usage["total"],
             input_tokens=usage["input"],
-            output_tokens=usage["output"]
+            output_tokens=usage["output"],
+            response_time=duration
         )
     except Exception as e:
         return TranslationResponse(
@@ -210,7 +232,8 @@ async def openai_translate(request: TranslationRequest):
             translated_data=None,
             target_language=request.target_language,
             provider="openai",
-            error=str(e)
+            error=str(e),
+            response_time=round(time.time() - start_time, 3)
         )
 
 
@@ -233,12 +256,15 @@ async def openai_translate_simple(
     if not openai_translator.is_configured():
         raise HTTPException(status_code=500, detail="OpenAI API key not configured")
     
+    start_time = time.time()
     try:
         translated, usage = await openai_translator.translate(
             data={"text": text},
             target_language=lang,
             summarize=summarize
         )
+        duration = round(time.time() - start_time, 3)
+        
         return TranslationResponse(
             success=True,
             translated_data=translated,
@@ -247,10 +273,18 @@ async def openai_translate_simple(
             summarized=summarize,
             total_tokens=usage["total"],
             input_tokens=usage["input"],
-            output_tokens=usage["output"]
+            output_tokens=usage["output"],
+            response_time=duration
         )
     except Exception as e:
-        return TranslationResponse(success=False, translated_data=None, target_language=lang, provider="openai", error=str(e))
+        return TranslationResponse(
+            success=False, 
+            translated_data=None, 
+            target_language=lang, 
+            provider="openai", 
+            error=str(e),
+            response_time=round(time.time() - start_time, 3)
+        )
 
 
 # ===========================================

@@ -9,9 +9,9 @@ class TranslationRequest(BaseModel):
         ...,
         description="JSON data with Chinese text values to translate."
     )
-    target_language: Literal["uz", "ru", "en"] = Field(
+    target_language: str = Field(
         default="en",
-        description="Target language: uz (Uzbek), ru (Russian), en (English)."
+        description="Target language code (e.g. 'en', 'es', 'uz')."
     )
     keys_to_translate: Optional[List[str]] = Field(
         default=None,
@@ -55,13 +55,14 @@ class TranslationResponse(BaseModel):
     input_tokens: Optional[int] = None
     output_tokens: Optional[int] = None
     total_tokens: Optional[int] = None
+    response_time: Optional[float] = Field(default=None, description="Time taken in seconds")
 
 
 class BatchTranslationRequest(BaseModel):
     """Batch translation request."""
     
     items: List[Dict[str, Any]]
-    target_language: Literal["uz", "ru", "en"] = "en"
+    target_language: str = "en"
     keys_to_translate: Optional[List[str]] = None
     summarize: Optional[bool] = None
 
